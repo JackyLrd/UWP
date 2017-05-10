@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLitePCL;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,7 +31,11 @@ namespace EasyPuzzle
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.LoadDatabase();
         }
+
+        // sqliteconnection
+        static public SQLitePCL.SQLiteConnection conn { get; set; }
 
         /// <summary>
         /// 在应用程序由最终用户正常启动时进行调用。
@@ -101,6 +106,20 @@ namespace EasyPuzzle
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: 保存应用程序状态并停止任何后台活动
             deferral.Complete();
+        }
+
+        private void LoadDatabase()
+        {
+            conn = new SQLiteConnection("record_list.db");
+            string sql_create = @"CREATE TABLE IF NOT EXISTS
+                                    Record (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                                          Name VARCHAR(200),
+                                          FinishTime INTEGER,
+                                          Date VARCHAR(200))";
+            using (var statement = conn.Prepare(sql_create))
+            {
+                statement.Step();
+            }
         }
     }
 }

@@ -18,8 +18,32 @@ namespace EasyPuzzle.Models
         //the date of record
         private DateTime _date;
 
-        public string name { get; set; }
-        public long finishTime { get; set; }
-        public DateTime date { get; set; }
+        //constructor
+        public Record(long id, string name, long time, DateTime date)
+        {
+            this.id = id;
+            this.name = name;
+            this.finishTime = time;
+            this.date = date;
+        }
+
+        public string name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+            }
+        }
+        public long finishTime
+        {
+            get { return _finishTime; }
+            set { _finishTime = value; }
+        }
+        public DateTime date
+        {
+            get { return _date; }
+            set { _date = value; }
+        }
     }
 }
