@@ -31,7 +31,7 @@ namespace EasyPuzzle
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-            this.LoadDatabase();
+            //this.LoadDatabase();
         }
 
         // sqliteconnection
@@ -110,16 +110,16 @@ namespace EasyPuzzle
 
         private void LoadDatabase()
         {
-            conn = new SQLiteConnection("record_list.db");
-            string sql_create = @"CREATE TABLE IF NOT EXISTS
-                                    Record (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                                          Name VARCHAR(200),
-                                          FinishTime INTEGER,
-                                          Date VARCHAR(200))";
-            using (var statement = conn.Prepare(sql_create))
-            {
-                statement.Step();
-            }
+            //conn = new SQLiteConnection("record_list.db");
+            //string sql_create = @"CREATE TABLE IF NOT EXISTS
+            //                        Record (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            //                              Name VARCHAR(200),
+            //                              FinishTime INTEGER,
+            //                              Date VARCHAR(200))";
+            //using (var statement = conn.Prepare(sql_create))
+            //{
+            //    statement.Step();
+            //}
         }
     }
 }
