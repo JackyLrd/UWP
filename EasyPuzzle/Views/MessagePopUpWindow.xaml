@@ -1,0 +1,51 @@
+﻿<UserControl
+    x:Class="EasyPuzzle.Views.MessagePopUpWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:EasyPuzzle.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <Border x:Name="OutBorder" Background="#55000000" 
+                VerticalAlignment="Stretch" 
+                HorizontalAlignment="Stretch"/>
+
+        <StackPanel x:Name="ContentGrid" Background="Lavender" 
+              Margin="45,45"
+              Orientation="Vertical"
+              VerticalAlignment="Center">
+
+            <Grid Padding="20">
+                <TextBlock x:Name="tbContent"
+                           Grid.Row="0" 
+                           TextWrapping="Wrap"  
+                           HorizontalAlignment="Center" />
+                <StackPanel x:Name="DifficultyChoose" Visibility="Collapsed">
+                    <TextBlock Text="请选择难度：" Style="{StaticResource BodyTextBlockStyle}" FontSize="25" HorizontalAlignment="Center" Margin="0,0,0,10" />
+                    <RadioButton x:Name="difficulty3m3" Content="简单：3 * 3" HorizontalAlignment="Center" Checked="difficulty3m3_Checked" />
+                    <RadioButton x:Name="difficulty4m4" Content="较难：4 * 4" HorizontalAlignment="Center" Checked="difficulty4m4_Checked" />
+                </StackPanel>
+                 </Grid>
+
+            <Grid Padding="15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" x:Name="Btn" 
+                        Content="确定" 
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        BorderThickness="0" 
+                        Click="Button_Click"
+                        Background="BurlyWood"
+                        Foreground="White"
+                        MaxWidth="100"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+
+</UserControl>
