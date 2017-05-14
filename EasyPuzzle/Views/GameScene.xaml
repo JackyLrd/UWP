@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:EasyPuzzle.Views"
+    xmlns:md="using:EasyPuzzle.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -30,27 +31,64 @@
         </VisualStateManager.VisualStateGroups>
 
         <Grid.Background>
-            <ImageBrush ImageSource="ms-appx:Assets\background.jpg"/>
+            <ImageBrush ImageSource="ms-appx:Assets\background-image.jpg"/>
         </Grid.Background>
 
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="110"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+        <Grid Grid.Column="0" Name="SelectPictureGrid">
+            <Button x:Name="one" Click="Image_Click" Width="100" Height="100" MinHeight="100">
+                <Image x:Name="img1" Source="ms-appx:Assets\abc.jpg" Width="100" Height="100" Margin="-10,-6"/>
+            </Button>
+            <Button x:Name="two" Click="Image_Click" Margin="0,-100,0,100">
+                <Image x:Name="img2" Source="ms-appx:Assets\abc.jpg" Width="100" Height="100" Margin="-10,-6"/>
+            </Button>
+            <Button x:Name="three" Click="Image_Click" Margin="0,95,0,-95">
+                <Image x:Name="img3" Source="ms-appx:Assets\abc.jpg" Width="100" Height="100" Margin="-10,-6"/>
+            </Button>
+            <AppBarButton x:Name="SelectPictureButton" Icon="Pictures" Label="select" RelativePanel.AlignRightWithPanel="True" Click="SelectPictureButton_Click" VerticalAlignment="Top" Height="58" Width="100" Margin="0,614,0,0"/>
         </Grid>
 
-        <Grid Grid.Column="1" Name="SelectPictureGrid">
-            <Image x:Name="img1" Source="ms-appx:Assets\abc.jpg" Width="100" Height="100" Stretch="UniformToFill" Margin="0,0,0,260" d:LayoutOverrides="Height" VerticalAlignment="Bottom"/>
-            <Image x:Name="img2" Source="ms-appx:Assets\abc.jpg" Width="100" Height="100" Stretch="UniformToFill" Margin="0,0,0,140" VerticalAlignment="Bottom"/>
-            <Image x:Name="img3" Source="ms-appx:Assets\abc.jpg" Width="100" Height="100" Margin="0,0,0,20" VerticalAlignment="Bottom"/>
-            <Image x:Name="img4" Width="100" Height="100" Margin="0,110,0,0" VerticalAlignment="Top"/>
-            <AppBarButton x:Name="SelectPictureButton" Icon="Pictures" Label="select" RelativePanel.AlignRightWithPanel="True" Click="SelectPictureButton_Click" VerticalAlignment="Top" Height="58" Width="100" Margin="0,276,0,0"/>
+        <Grid x:Name="mainGrid" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="400" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="1" x:Name="grid">
+                <GridView x:Name="gridView" Width="330" Height="330" ItemsSource="{x:Bind ViewModel.Imgs}" IsItemClickEnabled="True" ItemClick="gridView_ItemClick" Margin="125,42,130,28">
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Vertical"  MaximumRowsOrColumns="3"></ItemsWrapGrid>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="md:PuzzleFragment">
+                            <UserControl>
+                                <Grid Width="100" Height="100">
+                                    <Image Source="{x:Bind Src, Mode=OneWay}" Width="100" Height="100"></Image>
+                                </Grid>
+                            </UserControl>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+                <TextBlock x:Name="nameBlock" Margin="0,10,520,365">你的姓名:</TextBlock>
+                <TextBox x:Name="name" Margin="70,0,390,365"/>
+                <TextBlock x:Name="recordBlock" Margin="200,5,315,365">你的记录:</TextBlock>
+                <TextBox x:Name="record" Margin="275,0,185,363"></TextBox>
+                <TextBlock x:Name="time" Margin="10,86,540,290">时间:</TextBlock>
+                <Button x:Name="submit" Click="submit_Click" Margin="405,4,0,367" Height="29" Width="90">提交</Button>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="Grid2" Grid.Column="2" DataContext="{x:Bind img}">
+            <Image Source="{Binding SRC}" x:Name="img5" Width="500" Height="500"></Image>
         </Grid>
     </Grid>
+
+
 </Page>
