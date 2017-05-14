@@ -12,10 +12,10 @@ namespace EasyPuzzle.Models
         //player's name 
         private string _name;
         //player's finish time
-        private string _finishTime;
+        private long _finishTime;
 
         //constructor
-        public Record(string name, string time)
+        public Record(string name, long time)
         {
             this.name = name;
             this.finishTime = time;
@@ -30,7 +30,7 @@ namespace EasyPuzzle.Models
             }
         }
 
-        public string finishTime
+        public long finishTime
         {
             get { return _finishTime; }
             set { _finishTime = value; }

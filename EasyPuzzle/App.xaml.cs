@@ -133,7 +133,7 @@ namespace EasyPuzzle
         private void LoadDatabase()
         {
             conn = new SQLiteConnection("record_list.db");
-            string sql_create = @"CREATE TABLE IF NOT EXISTS Record (Name VARCHAR(200) PRIMARY KEY, FinishTime VARCHAR(200));";
+            string sql_create = @"CREATE TABLE IF NOT EXISTS Record (Name VARCHAR(200) PRIMARY KEY, FinishTime INTEGER);";
             using (var statement = conn.Prepare(sql_create))
             {
                 statement.Step();
