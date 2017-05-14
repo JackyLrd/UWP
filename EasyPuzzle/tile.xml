@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<tile>
+  <visual displayName="EasyPuzzle">
+
+    <binding template="TileSmall" displayName="EasyPuzzle">
+      <image src="ms-appx:///Assets/background-image.jpg" placement="background-image"/>
+    </binding>
+
+    <binding template="TileMedium" displayName="EasyPuzzle">
+      <image src="ms-appx:///Assets/background-image.jpg" placement="background-image"/>
+    </binding>
+
+    <binding template="TileWide" displayName="EasyPuzzle">
+      <image src="ms-appx:///Assets/background-image.jpg" placement="background-image"/>
+    </binding>
+
+    <binding template="TileLarge" displayName="EasyPuzzle">
+      <image src="ms-appx:///Assets/background-image.jpg" placement="background-image"/>
+    </binding>
+
+  </visual>
+</tile>

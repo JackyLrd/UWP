@@ -22,6 +22,13 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using SQLitePCL;
 using System.Text;
+using System.Windows;
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Activation;
+using Windows.UI.Core;
+using Windows.UI.Notifications;
+using Windows.Data.Xml.Dom;
+using Windows.ApplicationModel.DataTransfer;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上有介绍
 
@@ -44,6 +51,7 @@ namespace EasyPuzzle.Views
         private string str2;
         private string str3;
         private string str4;
+        private string src = "";
 
         ViewModels.GameSceneViewModel ViewModel { get; set; }
         public GameScene()
@@ -63,7 +71,7 @@ namespace EasyPuzzle.Views
             dispatchTimer.Interval = TimeSpan.FromMilliseconds(1000);
             dispatchTimer.Tick += dispatchTimer_Tick;
             t = 0;
-            nameBlock.Visibility = name.Visibility = submit.Visibility = Visibility.Collapsed;
+            share.Visibility =  nameBlock.Visibility = name.Visibility = submit.Visibility = Visibility.Collapsed;
         }
 
         void dispatchTimer_Tick(object sender, object e)
@@ -105,6 +113,8 @@ namespace EasyPuzzle.Views
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            DataTransferManager.GetForCurrentView().DataRequested += OnShareDataRequested;
+
             if (e.NavigationMode == NavigationMode.New)
             {
                 // If this is a new navigation, this is a fresh launch so we can
@@ -134,11 +144,12 @@ namespace EasyPuzzle.Views
 
             this.dimension = (int)e.Parameter;
             this.initialOrder = new int[dimension * dimension];
-            
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
+            DataTransferManager.GetForCurrentView().DataRequested -= OnShareDataRequested;
+
             bool suspending = ((App)App.Current).IsSuspending;
             if (suspending)
             {
@@ -169,7 +180,7 @@ namespace EasyPuzzle.Views
                 if (x == true)
                 {
                     dispatchTimer.Stop();
-                    nameBlock.Visibility = name.Visibility = submit.Visibility = Visibility.Visible;
+                    share.Visibility = nameBlock.Visibility = name.Visibility = submit.Visibility = Visibility.Visible;
                 }
                 //textBlock.Text = SelectedFragment.Index.ToString() + " " + SelectedFragment.CurIndex.ToString() + " " + ViewModel.correct.ToString() + " " + ViewModel.count.ToString();
                 this.SelectedFragment = null;
@@ -179,14 +190,15 @@ namespace EasyPuzzle.Views
 
         private void Image_Click(object sender, RoutedEventArgs e)
         {
+            share.Visibility = nameBlock.Visibility = name.Visibility = submit.Visibility = Visibility.Collapsed;
             if (dispatchTimer.IsEnabled)
             {
                 dispatchTimer.Stop();
                 t = 0;
                 time.Text = "时间: 0";
             }
+            src = "";
             string index = ((Button)e.OriginalSource).Name;
-            string src = "";
             switch (index)
             {
                 case "one":
@@ -206,6 +218,7 @@ namespace EasyPuzzle.Views
             //string path = img.SRC.ToString();
             string path = src.Substring(0, position) + "-";
             cutImage(path, ".jpg");//src.Substring(position));
+            update();
         }
 
         private void cutImage(string path, string postfix)
@@ -228,15 +241,6 @@ namespace EasyPuzzle.Views
             {
                 initialOrder[i] = dimension * dimension - 1 - i;
             }
-            /*for (int i = 0; i < 50; i++)
-            {
-                Random random = new Random();
-                int a = random.Next() % (dimension * dimension);
-                int b = random.Next() % (dimension * dimension);
-                int temp = initialOrder[a];
-                initialOrder[a] = initialOrder[b];
-                initialOrder[b] = temp;
-            }*/
             for (int i = 0; i < dimension * dimension; i++)
             {
                 string str = path + dimension.ToString() + "/" + initialOrder[i].ToString() + postfix;//碎片的path
@@ -307,8 +311,49 @@ namespace EasyPuzzle.Views
             {
                 ViewModel.removeFragment(0);
             }
-            nameBlock.Visibility = name.Visibility = submit.Visibility = Visibility.Collapsed;
+            share.Visibility = nameBlock.Visibility = name.Visibility = submit.Visibility = Visibility.Collapsed;
             name.Text = "";
+        }
+
+        async void OnShareDataRequested(DataTransferManager sender, DataRequestedEventArgs args)
+        {
+            var dp = args.Request.Data;
+            var deferral = args.Request.GetDeferral();
+            var photoFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(src));
+            dp.Properties.Title = "EasyPuzzle";
+            dp.Properties.Description = "EasyPuzzle";
+            dp.SetText("Do you like it?");
+            dp.SetStorageItems(new List<StorageFile> { photoFile });
+            deferral.Complete();
+        }
+
+        private void update()
+        {
+            //五分钟之后清除更新
+            //tileNotification.ExpirationTime = DateTimeOffset.UtcNow.AddMinutes(5);
+
+            //立即发送更新
+            var updater = TileUpdateManager.CreateTileUpdaterForApplication();
+            updater.EnableNotificationQueue(true);
+            updater.Clear();
+            XmlDocument tileXml = new XmlDocument();
+            tileXml.LoadXml(File.ReadAllText("tile.xml"));
+
+            //磁贴文本，如果指定了显示应用名称，文本将会显示在应用名称上方
+            XmlNodeList tileTextAttributes = tileXml.GetElementsByTagName("text");
+            //磁贴图片
+            XmlNodeList tileImageAttributes = tileXml.GetElementsByTagName("image");
+            ((XmlElement)tileImageAttributes[0]).SetAttribute("src", src);
+            ((XmlElement)tileImageAttributes[1]).SetAttribute("src", src);
+            ((XmlElement)tileImageAttributes[2]).SetAttribute("src", src);
+            ((XmlElement)tileImageAttributes[3]).SetAttribute("src", src);
+            TileNotification tileNotification = new TileNotification(tileXml);
+            updater.Update(tileNotification);
+        }
+
+        private void share_Click(object sender, RoutedEventArgs e)
+        {
+            DataTransferManager.ShowShareUI();
         }
     }
 
@@ -326,5 +371,4 @@ namespace EasyPuzzle.Views
             throw new NotImplementedException();
         }
     }
-    //"{Binding Imgs.Count, Mode=OneWay, Converter={StaticResource ResourceKey=converter}}"
 }
