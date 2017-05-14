@@ -102,11 +102,8 @@ namespace EasyPuzzle.Views
                     str4 = file.Path.ToString();
                     int position1 = str4.IndexOf('A');
                     int position2 = str4.IndexOf('.');
-                    //string path = img.SRC.ToString();
                     string path = "ms-appx:///" + str4.Substring(position1, position2 - position1) + "-";
-                    cutImage(path, ".jpg");//src.Substring(position));
-                    /*var msgDialog = new Windows.UI.Popups.MessageDialog(path) { Title = "提示标题" };
-                    await msgDialog.ShowAsync();*/
+                    cutImage(path, ".jpg");
                 }
             }
         }
@@ -138,9 +135,6 @@ namespace EasyPuzzle.Views
             }
 
             this.ViewModel = new ViewModels.GameSceneViewModel();
-            /*var startPopup = new MessagePopUpWindow("", "确认难度");
-            startPopup.ShowWindow();
-            int d = startPopup.getDifficulty();*/
 
             this.dimension = (int)e.Parameter;
             this.initialOrder = new int[dimension * dimension];
@@ -170,7 +164,6 @@ namespace EasyPuzzle.Views
             if (this.SelectedFragment == null)
             {
                 this.SelectedFragment = (Models.PuzzleFragment)(e.ClickedItem);
-                //textBlock.Text = SelectedFragment.Index.ToString() + " " + SelectedFragment.CurIndex.ToString();
             }
             else
             {
@@ -182,7 +175,6 @@ namespace EasyPuzzle.Views
                     dispatchTimer.Stop();
                     share.Visibility = nameBlock.Visibility = name.Visibility = submit.Visibility = Visibility.Visible;
                 }
-                //textBlock.Text = SelectedFragment.Index.ToString() + " " + SelectedFragment.CurIndex.ToString() + " " + ViewModel.correct.ToString() + " " + ViewModel.count.ToString();
                 this.SelectedFragment = null;
             }
             
@@ -215,9 +207,8 @@ namespace EasyPuzzle.Views
                     break;
             }
             int position = src.IndexOf('.');
-            //string path = img.SRC.ToString();
             string path = src.Substring(0, position) + "-";
-            cutImage(path, ".jpg");//src.Substring(position));
+            cutImage(path, ".jpg");
             update();
         }
 

@@ -26,24 +26,8 @@ namespace EasyPuzzle.ViewModels
             }
         }
 
-       // public void removeRecord(long id)
-       // {
-            //var toDelete = RecordList.Single<Models.Record>(i => i.id == id);
-            //RecordList.Remove(toDelete);
-            //var db = App.conn;
-            //string sql_delete = @"DELETE
-            //                      FROM Record
-            //                      WHERE Id = ?";
-            //using (var statement = db.Prepare(sql_delete))
-            //{
-            //    statement.Bind(1, id);
-            //    statement.Step();
-            //}
-        //}
-
         public List<Models.Record> getTop5Players()
         {
-            //???how to get slice of 1-5
             List<Models.Record> allRecord = (new ObservableCollection<Models.Record>(from i in RecordList orderby i.finishTime select i)).ToList<Models.Record>();
             List<Models.Record> top5Players = new List<Models.Record>();
             for (int i = 0; i < 5; i++)
