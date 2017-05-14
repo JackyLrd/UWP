@@ -60,8 +60,6 @@ namespace EasyPuzzle.ViewModels
             correct = 0;
             for (int i = 0; i < count; i++)
             {
-                /*var msgDialog = new Windows.UI.Popups.MessageDialog(imgs[i].Index.ToString() + " " + imgs[i].CurIndex.ToString()) { Title = "提示标题" };
-                msgDialog.ShowAsync();*/
                 if (imgs[i].Index == imgs[i].CurIndex)
                 {
                     correct++;
