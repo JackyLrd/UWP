@@ -13,6 +13,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ms-appx:///Common/RoundedButtonStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <local:Converter x:Key="converter"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -29,6 +30,14 @@
                    Margin="0,100,0,0"  FontSize="80"/>
         <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Button x:Name="startButton" Content="开始游戏" Style="{ThemeResource RoundedButtonStyle}"  Click="startButton_Click"/>
+            <Grid Name="g" Visibility="Visible">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <CheckBox Grid.Row="0" Name="Easy" IsChecked="True" Content="简单"/>
+                <CheckBox Grid.Row="1" Name="Hard" IsChecked="{Binding Path=IsChecked, ElementName=Easy, Mode=TwoWay, Converter={StaticResource ResourceKey=converter}}" Content="困难"/>
+            </Grid>
             <Button x:Name="continueButton" Content="继续游戏" Style="{ThemeResource RoundedButtonStyle}" Click="continueButton_Click"/>
             <Button x:Name="rulesButton" Content="游戏规则" Style="{ThemeResource RoundedButtonStyle}" Click="rulesButton_Click" />
             <Button x:Name="rankingButton" Content="排行榜" Style="{ThemeResource RoundedButtonStyle}" Click="rankingButton_Click"/>

@@ -36,15 +36,14 @@ namespace EasyPuzzle
 
         private void startButton_Click(object sender, RoutedEventArgs e)
         {
-            var startPopup = new MessagePopUpWindow("", "确认难度");
-            startPopup.ShowWindow();
-            int d = startPopup.getDifficulty();
+            int d = Easy.IsChecked == true ? 3 : 4;
             Frame.Navigate(typeof(Views.GameScene), d);
         }
 
         private void continueButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(Views.GameScene));
+            int d = Easy.IsChecked == true ? 3 : 4;
+            Frame.Navigate(typeof(Views.GameScene), d);
         }
 
         private void rulesButton_Click(object sender, RoutedEventArgs e)
@@ -58,13 +57,42 @@ namespace EasyPuzzle
         {
             //todo: connect to the database
             List<Models.Record> top5Player = recordViewModel.getTop5Players();
-            string rankingText = "积分榜：\n昵称\t完成时长\t时间\n";
+            string rankingText = "积分榜：\n昵称\t完成时长\n";
             foreach (var n in top5Player)
             {
-                rankingText += n.name + "\t" + n.finishTime + "\t" + n.date.ToString() + "\n";
+                rankingText += n.name + "\t" + n.finishTime + "\n";
             }
             var rankingPopup = new MessagePopUpWindow(rankingText, "点个赞");
             rankingPopup.ShowWindow();
+        }
+    }
+
+    public class Converter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            bool? ischecked = value as bool?;
+            if (ischecked == null || ischecked == false)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            bool? ischecked = value as bool?;
+            if (ischecked == null || ischecked == false)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

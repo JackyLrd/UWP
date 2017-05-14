@@ -22,25 +22,14 @@ namespace EasyPuzzle.ViewModels
             }
         }
         private ObservableCollection<Models.PuzzleFragment> imgs = new ObservableCollection<Models.PuzzleFragment>();
-        private int count;
+        public int count;
+        public int correct;
 
         public ObservableCollection<Models.PuzzleFragment> Imgs { get { return this.imgs; } }
 
-        public GameSceneViewModel(int para)
+        public GameSceneViewModel()
         {
             count = 0;
-            for (int i = 0; i < para * para; i++)
-            {
-                var a = new Models.PuzzleFragment();
-                var img = new Windows.UI.Xaml.Controls.Image();
-                img.Source = new BitmapImage(new Uri("ms-appx:///Assets/abc.jpg"));
-                img.Width = img.Height = 100;
-                a.Index = i;
-                a.Img = img;
-                a.Src = img.Source;
-                addFragment(a);
-            }
-            addFragment(new PuzzleFragment());
         }
 
         public void addFragment(PuzzleFragment x)
@@ -68,9 +57,11 @@ namespace EasyPuzzle.ViewModels
 
         internal bool checkfinished()
         {
-            int correct = 0;
+            correct = 0;
             for (int i = 0; i < count; i++)
             {
+                /*var msgDialog = new Windows.UI.Popups.MessageDialog(imgs[i].Index.ToString() + " " + imgs[i].CurIndex.ToString()) { Title = "提示标题" };
+                msgDialog.ShowAsync();*/
                 if (imgs[i].Index == imgs[i].CurIndex)
                 {
                     correct++;

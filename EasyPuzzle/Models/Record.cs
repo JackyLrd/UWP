@@ -9,22 +9,16 @@ namespace EasyPuzzle.Models
 {
     public class Record
     {
-        //unique identity
-        public long id { get; }
         //player's name 
         private string _name;
         //player's finish time
-        private long _finishTime;
-        //the date of record
-        private DateTime _date;
+        private string _finishTime;
 
         //constructor
-        public Record(long id, string name, long time, DateTime date)
+        public Record(string name, string time)
         {
-            this.id = id;
             this.name = name;
             this.finishTime = time;
-            this.date = date;
         }
 
         public string name
@@ -35,15 +29,11 @@ namespace EasyPuzzle.Models
                 _name = value;
             }
         }
-        public long finishTime
+
+        public string finishTime
         {
             get { return _finishTime; }
             set { _finishTime = value; }
-        }
-        public DateTime date
-        {
-            get { return _date; }
-            set { _date = value; }
         }
     }
 }

@@ -8,6 +8,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <local:Converter x:Key="converter"/>
+    </Page.Resources>
+
     <Grid>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
@@ -41,29 +45,29 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" Name="SelectPictureGrid">
-            <Button x:Name="one" Click="Image_Click" Width="100" Height="100" MinHeight="100">
-                <Image x:Name="img1" Source="ms-appx:Assets\abc.jpg" Width="100" Height="100" Margin="-10,-6"/>
+            <Button x:Name="one" Click="Image_Click" Width="100" Height="100" MinHeight="100" Margin="10,230,0,0" VerticalAlignment="Top" Grid.Row="0">
+                <Image x:Name="img1" Source="ms-appx:///Assets/p1.jpg" Width="100" Height="100" Margin="-50" Grid.Row="0"/>
             </Button>
-            <Button x:Name="two" Click="Image_Click" Margin="0,-100,0,100">
-                <Image x:Name="img2" Source="ms-appx:Assets\abc.jpg" Width="100" Height="100" Margin="-10,-6"/>
+            <Button x:Name="two" Click="Image_Click" Width="100" Height="100" Margin="10,10,0,0">
+                <Image x:Name="img2" Source="ms-appx:///Assets/p2.jpg" Width="100" Height="100" Margin="-10,-6" Grid.Row="1" />
             </Button>
-            <Button x:Name="three" Click="Image_Click" Margin="0,95,0,-95">
-                <Image x:Name="img3" Source="ms-appx:Assets\abc.jpg" Width="100" Height="100" Margin="-10,-6"/>
+            <Button x:Name="three" Click="Image_Click"  VerticalAlignment="Bottom" Width="100" Height="100" Margin="10,0,0,230">
+                <Image x:Name="img3" Source="ms-appx:///Assets/p3.jpg" Width="100" Height="100" Margin="-10,-6" Grid.Row="2"/>
             </Button>
-            <AppBarButton x:Name="SelectPictureButton" Icon="Pictures" Label="select" RelativePanel.AlignRightWithPanel="True" Click="SelectPictureButton_Click" VerticalAlignment="Top" Height="58" Width="100" Margin="0,614,0,0"/>
+            <AppBarButton x:Name="SelectPictureButton" Icon="Pictures" Label="select" RelativePanel.AlignRightWithPanel="True" Click="SelectPictureButton_Click" VerticalAlignment="Top" Height="58" Width="100" Margin="10,944,0,0"/>
         </Grid>
 
         <Grid x:Name="mainGrid" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="400" />
+                <RowDefinition Height="500" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid Grid.Row="1" x:Name="grid">
-                <GridView x:Name="gridView" Width="330" Height="330" ItemsSource="{x:Bind ViewModel.Imgs}" IsItemClickEnabled="True" ItemClick="gridView_ItemClick" Margin="125,42,130,28">
+                <GridView x:Name="gridView" ItemsSource="{x:Bind ViewModel.Imgs}" IsItemClickEnabled="True" ItemClick="gridView_ItemClick" Margin="85,0,0,0" Height="500" Width="500">
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Vertical"  MaximumRowsOrColumns="3"></ItemsWrapGrid>
+                            <ItemsWrapGrid Name="panel" Orientation="Horizontal" MaximumRowsOrColumns="{Binding Imgs.Count, Mode=OneWay, Converter={StaticResource ResourceKey=converter}}" ></ItemsWrapGrid>
                         </ItemsPanelTemplate>
                     </GridView.ItemsPanel>
                     <GridView.ItemTemplate>
@@ -76,12 +80,10 @@
                         </DataTemplate>
                     </GridView.ItemTemplate>
                 </GridView>
-                <TextBlock x:Name="nameBlock" Margin="0,10,520,365">你的姓名:</TextBlock>
-                <TextBox x:Name="name" Margin="70,0,390,365"/>
-                <TextBlock x:Name="recordBlock" Margin="200,5,315,365">你的记录:</TextBlock>
-                <TextBox x:Name="record" Margin="275,0,185,363"></TextBox>
-                <TextBlock x:Name="time" Margin="10,86,540,290">时间:</TextBlock>
-                <Button x:Name="submit" Click="submit_Click" Margin="405,4,0,367" Height="29" Width="90">提交</Button>
+                <TextBlock Grid.Column="0" x:Name="nameBlock" Margin="75,-64,440,544">你的姓名:</TextBlock>
+                <TextBox x:Name="name" Margin="150,-70,310,538" Width="125" Height="32" RenderTransformOrigin="-0.6,0.625"/>
+                <TextBlock x:Name="time" Margin="0,86,515,390">时间:</TextBlock>
+                <Button x:Name="submit" Click="submit_Click" Margin="495,-70,0,0" Height="32" Width="90" VerticalAlignment="Top" d:LayoutOverrides="TopMargin, BottomMargin">提交</Button>
             </Grid>
         </Grid>
 

@@ -20,17 +20,13 @@ namespace EasyPuzzle.ViewModels
             using (var statement = db.Prepare(sql_load))
             {
                 while (statement.Step() != SQLiteResult.DONE)
-                {
-                    DateTime date = DateTime.Parse((string)statement[3]);
-                    _recordList.Add(new Models.Record((long)statement[0],
-                                                    (string)statement[1],
-                                                    (long)statement[2],
-                                                    date));
+                {                   
+                    _recordList.Add(new Models.Record((string)statement[0], (string)statement[1]));
                 }
             }
         }
 
-        public void addRecord(string name, long time, DateTime date)
+        /*public void addRecord(string name, string time)
         {
             var db = App.conn;
             //insert into db
@@ -60,9 +56,9 @@ namespace EasyPuzzle.ViewModels
             {
                 //todo:handling exception
             }
-            var newRecord = new Models.Record(id, name, time, date);
+            var newRecord = new Models.Record(name, time);
             this._recordList.Add(newRecord);
-        }
+        }*/
 
        // public void removeRecord(long id)
        // {
@@ -86,8 +82,11 @@ namespace EasyPuzzle.ViewModels
             List<Models.Record> top5Players = new List<Models.Record>();
             for (int i = 0; i < 5; i++)
             {
+                if (i >= allRecord.Count)
+                    break;
                 top5Players.Add(allRecord[i]);
-            }
+            }          
+
             return top5Players;
         }
     }

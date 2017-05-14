@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.Storage;
 
 namespace EasyPuzzle
 {
@@ -34,6 +35,8 @@ namespace EasyPuzzle
             this.LoadDatabase();
         }
 
+        public bool IsSuspending = false;
+
         // sqliteconnection
         static public SQLitePCL.SQLiteConnection conn { get; set; }
 
@@ -50,6 +53,9 @@ namespace EasyPuzzle
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
+            ApplicationExecutionState previousState = e.PreviousExecutionState;
+            ActivationKind activationKind = e.Kind;
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // 不要在窗口已包含内容时重复应用程序初始化，
@@ -64,6 +70,10 @@ namespace EasyPuzzle
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     //TODO: 从之前挂起的应用程序加载状态
+                    if (ApplicationData.Current.LocalSettings.Values.ContainsKey("NavigationState"))
+                    {
+                        rootFrame.SetNavigationState((string)ApplicationData.Current.LocalSettings.Values["NavigationState"]);
+                    }
                 }
 
                 // 将框架放在当前窗口中
@@ -105,17 +115,25 @@ namespace EasyPuzzle
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: 保存应用程序状态并停止任何后台活动
+            IsSuspending = true;
+            // Get the frame navigation state serialized as a string and save in settings
+            Frame frame = Window.Current.Content as Frame;
+            ApplicationData.Current.LocalSettings.Values["NavigationState"] = frame.GetNavigationState();
             deferral.Complete();
+        }
+
+        private void OnResuming(object sender, object e)
+        {
+            // TODO: whatever you need to do to resume your app
+
+            // Clear the IsSuspending flag
+            IsSuspending = false;
         }
 
         private void LoadDatabase()
         {
             conn = new SQLiteConnection("record_list.db");
-            string sql_create = @"CREATE TABLE IF NOT EXISTS
-                                    Record (Id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                                          Name VARCHAR(200),
-                                          FinishTime INTEGER,
-                                          Date VARCHAR(200))";
+            string sql_create = @"CREATE TABLE IF NOT EXISTS Record (Name VARCHAR(200) PRIMARY KEY, FinishTime VARCHAR(200));";
             using (var statement = conn.Prepare(sql_create))
             {
                 statement.Step();
