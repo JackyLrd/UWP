@@ -82,7 +82,7 @@
                 </GridView>
                 <TextBlock Grid.Column="0" x:Name="nameBlock" Margin="75,-64,440,544">你的姓名:</TextBlock>
                 <TextBox x:Name="name" Margin="150,-70,310,538" Width="125" Height="32" RenderTransformOrigin="-0.6,0.625"/>
-                <TextBlock x:Name="time" Margin="0,86,515,390">时间:</TextBlock>
+                <TextBlock x:Name="time" Margin="0,86,835,390">时间:</TextBlock>
                 <Button x:Name="submit" Click="submit_Click" Margin="0,-70,290,0" Height="32" Width="90" VerticalAlignment="Top" d:LayoutOverrides="TopMargin, BottomMargin" HorizontalAlignment="Right">提交</Button>
                 <Button x:Name="share" Click="share_Click" Margin="760,-70,0,0" Height="32" Width="90" VerticalAlignment="Top" d:LayoutOverrides="TopMargin, BottomMargin">分享</Button>
             </Grid>
